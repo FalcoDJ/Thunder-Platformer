@@ -99,6 +99,12 @@ void Creature::spawn(VectorI _start)
     
     m_Health = m_MAX_Health;
 }
+void Creature::reset()
+{
+    vel *= 0;
+    
+    m_Health = m_MAX_Health;
+}
 
 void Creature::stopLeft(float newXl)
 {
