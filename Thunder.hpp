@@ -2,10 +2,12 @@
 #define THUNDER_ENGINE
 
 #include "HPP/olcPixelGameEngine.h"
-#include "HPP/Shapes.hpp"
 #include "HPP/Vector.hpp"
+#include "HPP/Shapes.hpp"
+#include "HPP/Collision.hpp"
 #include "Player.hpp"
 #include "Tile.hpp"
+
 
 enum class state {PLAYING, PAUSED, GAMEOVER, NEXTLEVEL};
 
@@ -38,14 +40,12 @@ public:
     RectF m_Camera = RectF({0,0},{320,180});
 
     Tile** LevelManager(int _Level = 0, int _World = 0);
-    void NextLevel();
+    void NextLevel(state _Gst = state::PAUSED);
 
 public:
 	bool OnUserCreate() override
 	{
         m_GameState = state::GAMEOVER;
-
-        NextLevel();
 
         m_Player.spawn(m_StartingPoint);
 
@@ -68,7 +68,18 @@ public:
 		{
             if (m_GameState != state::NEXTLEVEL) //Dont allow the game to run during level loading
             {
-                if (m_GameState != state::PLAYING )
+                if (m_GameState == state::GAMEOVER)
+                {
+
+                    m_CurrentLevel = 0;
+                    m_CurrentWorld = 1;
+
+                    m_Player.reset();
+
+                    //Restart the Game
+                    NextLevel(state::PLAYING);
+                }
+                else if (m_GameState != state::PLAYING)
                 {
                     m_GameState = state::PLAYING;
                 }
@@ -76,6 +87,7 @@ public:
                 {
                     m_GameState = state::PAUSED;
                 }
+                
             }
 		}
         if (m_GameState == state::PLAYING) // Playing
@@ -92,7 +104,10 @@ public:
         // 0-------------------0
         // | Update            |
         // 0-------------------0
-
+        if (m_GameState == state::NEXTLEVEL) // NextLevel
+        {
+            NextLevel();
+        }
         if (m_GameState == state::GAMEOVER) // GameOver
         {
 
@@ -114,6 +129,7 @@ public:
 
             for (int y = 0; y < m_LevelSize.y; y++)
             for (int x = 0; x < m_LevelSize.x; x++)
+            //if (m_TileMap[y][x])
             if (m_TileMap[y][x].getType() != TileTypes::AIR && 
                 m_Player.detectCollision(m_TileMap[y][x], GetElapsedTime()))
             {
@@ -121,14 +137,39 @@ public:
                 m_Player.resolveCollision(m_TileMap[y][x]);
                 else
                 {
-                    m_GameState == state::NEXTLEVEL;
-                    NextLevel();
+                    m_GameState = state::NEXTLEVEL;
                 }
                 
             }
 
             m_Camera.pos.x = m_Player.pos.x - 148;
             m_Camera.pos.y = m_Player.pos.y - 100;
+            
+            //Camera Cant Go Past screen edges
+            
+            // X
+            if (m_Camera.pos.x < 0)
+            {
+                m_Camera.pos.x = 0;
+            }
+            if (m_Camera.right() > m_LevelSize.x * 16)
+            {
+                m_Camera.pos.x = m_LevelSize.x * 16 - m_Camera.size.x;
+            }
+
+            // Y 
+            if (m_Camera.bottom() > m_LevelSize.y * 16)
+            {
+                m_Camera.pos.y = m_LevelSize.y * 16 - m_Camera.size.y;
+            }
+
+            // ! Put camera boundaries here !
+
+            //If player goes outside of camera end him ( Game Over :( !)
+            if (!detectCollision(m_Player, m_Camera))
+            {
+                m_GameState = state::GAMEOVER;
+            }
         }
 
         
@@ -166,7 +207,7 @@ public:
 
         if (m_GameState == state::GAMEOVER) // GameOver
         {
-
+            Clear(olc::BLACK);
         }
         if (m_GameState == state::PAUSED) // Paused
         {

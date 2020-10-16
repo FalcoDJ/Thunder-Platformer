@@ -10,7 +10,7 @@ class Tile : public RectF
 {
     public:
     Tile(){size = {16,16};};
-    ~Tile(){delete m_Sprite, m_Decal; std::cout << "Tile was destroyed properly!" << std::endl;}
+    ~Tile(){delete m_Sprite, m_Decal;}
 
     virtual void update(float ElapsedTime){pos += vel * ElapsedTime;};
     virtual void animate(){};

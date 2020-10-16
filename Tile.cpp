@@ -14,13 +14,13 @@ void Tile::Setup()
 
 void Tile::setTileType(char _type, int _frame)
 {
-    m_CurFrame = _frame;
+    m_CurFrame = _frame - 1;
 
     /***/if (_type == '#')
     {
         m_MyType = TileTypes::GOAL;
     }
-    else if (_type == '0')
+    else if (_type == '*')
     {
         m_MyType = TileTypes::AIR;
     }

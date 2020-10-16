@@ -49,31 +49,168 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 		_LevelArray[i] = new Tile[m_LevelSize.x];
 	}
 
-	// Loop through the file and store all the values in the 2d array
-	std::string row;
+	//Prepare a 2d array to hold the type of each tile
+	std::string typeOfTile[m_LevelSize.y];
+	//Record each type of tile in the array
 	int y = 0;
-	while (inputFile >> row)
+	while (inputFile >> typeOfTile[y])
 	{
-		for (int x = 0; x < row.length(); x++) {
+		y++;
+	}
 
-			const char val = row[x];
-            _LevelArray[y][x].setTileType(val);
-			if (val == '!')
+	//Setup some tile stuff
+	for (int y = 0; y < m_LevelSize.y; y++)
+	{
+		for (int x = 0; x < typeOfTile[y].length(); x++) {
+
+			const char type = typeOfTile[y][x];
+
+			if (type == '!')
 			{
-				int tileFrame;
-				if (val == 'G')
-				{
-					//Make auto tile frame selector based on position of tiles around a tile.
-				}
-
-				_LevelArray[y][x].setTileType('0', tileFrame);
+				_LevelArray[y][x].setTileType('*');
+				typeOfTile[y][x] = '*';
 				m_StartingPoint.x = x * 16;
 				m_StartingPoint.y = y * 16;
 			}
+			else
+			{
+				int tileFrame = 1;
+
+				if (type == 'G')
+				{
+					tileFrame = 10;
+
+					if (y < m_LevelSize.y - 1)
+						{
+							if (typeOfTile[y - 1][x] == 'G'
+							&&  typeOfTile[y + 1][x] == 'G'
+							&&  typeOfTile[y][x - 1] == 'G'
+							&&  typeOfTile[y][x + 1] == 'G')
+							{
+								//Surrounded by ground
+								tileFrame = 10;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//Surrounded by three (none on right)
+								tileFrame = 11;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x + 1] == 'G'
+								 &&  typeOfTile[y][x - 1] != 'G')
+							{
+								//Surrounded by three (none on left)
+								tileFrame = 9;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//Surrounded by three (none on bottom)
+								tileFrame = 14;
+							}
+							else if (typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//Surrounded by three (none on top)
+								tileFrame = 6;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched on top & right
+								tileFrame = 15;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//touched on top & left
+								tileFrame = 13;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//touched on bottom & right
+								tileFrame = 5;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched on bottom & left
+								tileFrame = 7;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//touched x axis
+								tileFrame = 2;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched y axis
+								tileFrame = 12;
+							}
+							else if (typeOfTile[y - 1][x] == 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched y axis
+								tileFrame = 16;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] == 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched y axis
+								tileFrame = 8;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] != 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] == 'G')
+							{
+								//touched y axis
+								tileFrame = 1;
+							}
+							else if (typeOfTile[y - 1][x] != 'G'
+								 &&  typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y + 1][x] != 'G'
+								 &&  typeOfTile[y][x + 1] != 'G')
+							{
+								//touched y axis
+								tileFrame = 3;
+							}
+						}
+				}
+				
+				_LevelArray[y][x].setTileType(type, tileFrame);
+			}
+			
 			_LevelArray[y][x].pos.x = x * 16;
 			_LevelArray[y][x].pos.y = y * 16;
 		}
-		y++;
 	}
 
 	// close the file

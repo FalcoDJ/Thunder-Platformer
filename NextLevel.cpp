@@ -1,6 +1,6 @@
 #include "Thunder.hpp"
 
-void Thunder::NextLevel()
+void Thunder::NextLevel(state _Gst)
 {
     for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
@@ -17,7 +17,5 @@ void Thunder::NextLevel()
     // ! Spawn Player(s) !
     m_Player.spawn(m_StartingPoint);
 
-    Clock loadTimer;
-
-    m_GameState = state::PAUSED;
+    m_GameState = _Gst;
 }

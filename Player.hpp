@@ -8,7 +8,7 @@ class Player : public Creature
 {
 public:
     Player();
-    ~Player(){std::cout << "Player was destroyed properly!" << std::endl;}
+    ~Player(){}
     bool handleInput(olc::PixelGameEngine *pge) override;
 
 private:

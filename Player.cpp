@@ -15,7 +15,7 @@ Player::Player()
     m_OnGround = false;
 
     //Define speed stuff
-    m_MAX_Acceleration = {300, 700};
+    m_MAX_Acceleration = {300, 200};
     m_Acceleration = {75, 62};
     m_JumpSpeed = 600;
 }

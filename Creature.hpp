@@ -22,7 +22,7 @@ public:
     RectF getSpriteD();
 
     virtual void spawn(VectorI _start);
-    virtual void reset(){}; //TODO - Edit this later
+    virtual void reset(); //TODO - Edit this later
 
     void stopLeft(float newXl);
     void stopRight(float newXr);
