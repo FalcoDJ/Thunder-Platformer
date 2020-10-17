@@ -210,6 +210,8 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 			
 			_LevelArray[y][x].pos.x = x * 16;
 			_LevelArray[y][x].pos.y = y * 16;
+
+			_LevelArray[y][x].setPathToSprites("assets/Levels/World" + std::to_string(m_CurrentWorld) + "/Tiles.png");
 		}
 	}
 

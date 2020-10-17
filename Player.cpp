@@ -12,7 +12,9 @@ Player::Player()
     m_SpriteData = RectF({0,0},{24,24});
 
     //Initialize some stuff
-    m_OnGround = false;
+    m_OnGround = true;
+    m_MAX_Lives = 5;
+    m_Lives = 5;
 
     //Define speed stuff
     m_MAX_Acceleration = {300, 200};
