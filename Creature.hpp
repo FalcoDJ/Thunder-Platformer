@@ -24,6 +24,21 @@ public:
     virtual void spawn(VectorI _start);
     virtual void reset(); //TODO - Edit this later
 
+    float getHealth(){return m_Health;}
+    float getLives(){return m_Lives;}
+
+    bool dye()
+    {
+        if (m_Lives < 1)
+        return true;
+        else
+        {
+            m_Health = 0;
+            m_Lives -= 1;
+            return false;
+        }
+    }
+
     void stopLeft(float newXl);
     void stopRight(float newXr);
     void stopFalling(float floorY);
@@ -48,6 +63,8 @@ protected:
 
     float m_Health;
     float m_MAX_Health;
+    float m_Lives;
+    float m_MAX_Lives;
 
     //Status variables
     bool m_JustJumped;

@@ -129,15 +129,34 @@ public:
 
             for (int y = 0; y < m_LevelSize.y; y++)
             for (int x = 0; x < m_LevelSize.x; x++)
-            //if (m_TileMap[y][x])
             if (m_TileMap[y][x].getType() != TileTypes::AIR && 
                 m_Player.detectCollision(m_TileMap[y][x], GetElapsedTime()))
             {
-                if (m_TileMap[y][x].getType() != TileTypes::GOAL)
-                m_Player.resolveCollision(m_TileMap[y][x]);
+                if (m_TileMap[y][x].getType() == TileTypes::GOAL)
+                m_GameState = state::NEXTLEVEL;
                 else
                 {
-                    m_GameState = state::NEXTLEVEL;
+                    if (m_TileMap[y][x].getType() == TileTypes::GROUND)
+                    {
+                        m_Player.resolveCollision(m_TileMap[y][x]);
+                    }
+                    else if (m_TileMap[y][x].getType() == TileTypes::COIN)
+                    {
+                        m_TileMap[y][x].setTileType('*');
+                    }
+                    else if (m_TileMap[y][x].getType() == TileTypes::LAVA)
+                    {
+                        if (m_Player.dye()) //If player is out of lives
+                        {
+                            m_GameState = state::GAMEOVER;
+                        }
+                        else
+                        { 
+                            m_Player.stopFalling(m_TileMap[y][x].pos.y);
+                            m_Player.vel.y = -900;
+                        }
+                        
+                    }
                 }
                 
             }

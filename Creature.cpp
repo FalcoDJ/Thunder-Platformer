@@ -97,12 +97,14 @@ void Creature::spawn(VectorI _start)
     pos.y = _start.y - size.y;
     vel *= 0;
     
+    m_Lives = m_MAX_Lives;
     m_Health = m_MAX_Health;
 }
 void Creature::reset()
 {
     vel *= 0;
     
+    m_Lives = m_MAX_Lives;
     m_Health = m_MAX_Health;
 }
 

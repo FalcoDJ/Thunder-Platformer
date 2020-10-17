@@ -17,6 +17,9 @@ class Tile : public RectF
     void drawSelf(olc::PixelGameEngine *pge, VectorF Camera);
 
     void Setup();
+
+    void setPathToSprites(std::string _path){pathToSprite = _path;}
+    
     virtual void setTileType(char _type, int _frame = 0);
     TileTypes getType(){return m_MyType;};
 

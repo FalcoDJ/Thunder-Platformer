@@ -14,7 +14,7 @@ void Tile::Setup()
 
 void Tile::setTileType(char _type, int _frame)
 {
-    m_CurFrame = _frame - 1;
+    m_CurFrame = _frame;
 
     /***/if (_type == '#')
     {
@@ -27,7 +27,7 @@ void Tile::setTileType(char _type, int _frame)
     else if (_type == '@') // @ = COIN
     {
         m_MyType = TileTypes::COIN;
-        // Set frame to coin frames
+        m_CurFrame = 24;
     }
     else if (_type == 'G') // G = GROUND
     {
@@ -44,5 +44,7 @@ void Tile::setTileType(char _type, int _frame)
     else if (_type == 'L') // L = LAVA
     {
         m_MyType = TileTypes::LAVA;
+        m_CurFrame = 22;
     }
+    m_CurFrame--;
 }
