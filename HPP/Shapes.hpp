@@ -41,7 +41,7 @@ struct Rect
     bool detectCollisionY(Rect &Targ, float ElapsedTime);
 };
 
-typedef Rect<int32_t>          RectI;
+typedef Rect<int>          RectI;
 typedef Rect<float>        RectF;
 typedef Rect<double>       RectD;
 typedef Rect<unsigned int> RectU;
@@ -97,23 +97,62 @@ bool Rect<num>::detectCollision(Rect &Targ, float ElapsedTime)
 template <class num>
 bool Rect<num>::detectCollisionX(Rect &Targ, float ElapsedTime)
 {
-    if (vel.x > 0)
-    return (pos.x < Targ.right() && Targ.pos.x < right() + vel.x * ElapsedTime);
-    else
-    return (pos.x + vel.x * ElapsedTime < Targ.right() && Targ.pos.x < right());
-
     return (pos.x < Targ.right() && Targ.pos.x < right());
 }
 
 template <class num>
 bool Rect<num>::detectCollisionY(Rect &Targ, float ElapsedTime)
 {
-    if (vel.y > 0)
-    return (pos.y < Targ.bottom() && Targ.pos.y < bottom() + vel.y * ElapsedTime);
-    else
-    return (pos.y + vel.y * ElapsedTime < Targ.bottom() && Targ.pos.y < bottom());
-
     return (pos.y < Targ.bottom() && Targ.pos.y < bottom());
 }
+
+template <typename num>
+class Circle //For boundaries (collisions)
+{
+public:
+
+  Vector<num> pos, vel;
+  num radius;
+
+  //Default constuctor
+  Circle(){}
+  Circle(Vector<num> _pos) : pos(_pos) {}
+  Circle(Vector<num> _pos, num _radius) : pos(_pos), radius(_radius) {}
+  Circle(Vector<num> _pos, num _radius, Vector<num> _vel) : pos(_pos), radius(_radius), vel(_vel) {}
+
+
+  bool detectCollision(Circle &_Targ)
+  {
+    num Cr = radius + _Targ.radius;
+    num Dx = pos.x - _Targ.pos.x;
+    num Dy = pos.y - _Targ.pos.y;
+
+    num Td = Dx * Dx + Dy * Dy;
+
+    return (Td <= Cr * Cr); //Collision is true
+  }
+};
+
+typedef Circle<float>        CircleF;
+typedef Circle<int>          CircleI;
+typedef Circle<double>       CircleD;
+typedef Circle<unsigned int> CircleU;
+
+template <typename num>
+class Ray
+{
+  public:
+  Vector<num> origin;
+  Vector<num> pos;
+
+  Ray(){}
+  Ray(Vector<num> _origin) : origin(_origin) {}
+  Ray(Vector<num> _origin, Vector<num> _pos) : origin(_origin), pos(_pos) {}
+};
+
+typedef Ray<int>          RayI;
+typedef Ray<float>        RayF;
+typedef Ray<double>       RayD;
+typedef Ray<unsigned int> RayU;
 
 #endif
