@@ -3,7 +3,7 @@
 
 void Tile::drawSelf(olc::PixelGameEngine *pge, VectorF Camera)
 {
-    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPerRow, m_FramesPerCol, m_CurFrame, Camera);
+    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPer, m_CurFrame, Camera);
 }
 
 void Tile::Setup()
@@ -46,5 +46,10 @@ void Tile::setTileType(char _type, int _frame)
         m_MyType = TileTypes::LAVA;
         m_CurFrame = 22;
     }
-    m_CurFrame--;
+    else if (_type == 'V')
+    {
+        m_MyType == TileTypes::SPIKE;
+        m_CurFrame = 18;
+    }
+    m_CurFrame -= 1;
 }

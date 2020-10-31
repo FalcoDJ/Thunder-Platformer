@@ -41,7 +41,7 @@ struct Vector
     operator Vector<double>() const { return { static_cast<double>(this->x), static_cast<double>(this->y) }; }
 };
 
-typedef Vector<int>          VectorI;
+typedef Vector<int32_t>          VectorI;
 typedef Vector<float>        VectorF;
 typedef Vector<double>       VectorD;
 typedef Vector<unsigned int> VectorU;

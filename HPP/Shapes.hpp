@@ -41,7 +41,7 @@ struct Rect
     bool detectCollisionY(Rect &Targ, float ElapsedTime);
 };
 
-typedef Rect<int>          RectI;
+typedef Rect<int32_t>          RectI;
 typedef Rect<float>        RectF;
 typedef Rect<double>       RectD;
 typedef Rect<unsigned int> RectU;
@@ -98,18 +98,22 @@ template <class num>
 bool Rect<num>::detectCollisionX(Rect &Targ, float ElapsedTime)
 {
     if (vel.x > 0)
-    return (pos.x + vel.x * ElapsedTime <= Targ.right() && Targ.pos.x + Targ.vel.x * ElapsedTime <= right());
-    //else
-    return (pos.x <= Targ.right() + Targ.vel.x * ElapsedTime && Targ.pos.x <= right() + vel.x * ElapsedTime);
+    return (pos.x < Targ.right() && Targ.pos.x < right() + vel.x * ElapsedTime);
+    else
+    return (pos.x + vel.x * ElapsedTime < Targ.right() && Targ.pos.x < right());
+
+    return (pos.x < Targ.right() && Targ.pos.x < right());
 }
 
 template <class num>
 bool Rect<num>::detectCollisionY(Rect &Targ, float ElapsedTime)
 {
     if (vel.y > 0)
-    return (pos.y + vel.y * ElapsedTime <= Targ.bottom() && Targ.pos.y + Targ.vel.y * ElapsedTime <= bottom());
-    //else
-    return (pos.y <= Targ.bottom() + Targ.vel.y * ElapsedTime && Targ.pos.y <= bottom() + vel.y * ElapsedTime);
+    return (pos.y < Targ.bottom() && Targ.pos.y < bottom() + vel.y * ElapsedTime);
+    else
+    return (pos.y + vel.y * ElapsedTime < Targ.bottom() && Targ.pos.y < bottom());
+
+    return (pos.y < Targ.bottom() && Targ.pos.y < bottom());
 }
 
 #endif

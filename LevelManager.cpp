@@ -63,20 +63,21 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 	{
 		for (int x = 0; x < typeOfTile[y].length(); x++) {
 
-			const char type = typeOfTile[y][x];
+			char type = typeOfTile[y][x];
 
 			if (type == '!')
 			{
 				_LevelArray[y][x].setTileType('*');
-				typeOfTile[y][x] = '*';
-				m_StartingPoint.x = x * 16;
-				m_StartingPoint.y = y * 16;
+				type = '*';
+				m_StartingPoint.x = x * 16 + 8;
+				m_StartingPoint.y = y * 16 + 8;
+				std::cout << "X: " << m_StartingPoint.x << " Y:" << m_StartingPoint.y << std::endl;
 			}
 			else
 			{
-				int tileFrame = 1;
+				int tileFrame;
 
-				if (type == 'G')
+				if (type == 'G') //Ground
 				{
 					tileFrame = 10;
 
@@ -131,80 +132,58 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 								tileFrame = 15;
 							}
 							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
 								 &&  typeOfTile[y][x + 1] == 'G')
 							{
 								//touched on top & left
 								tileFrame = 13;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
+							else if (typeOfTile[y + 1][x] == 'G'
 								 &&  typeOfTile[y][x + 1] == 'G')
 							{
 								//touched on bottom & right
 								tileFrame = 5;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
+							else if (typeOfTile[y][x - 1] == 'G'
+								 &&  typeOfTile[y + 1][x] == 'G')
 							{
 								//touched on bottom & left
 								tileFrame = 7;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
+							else if (typeOfTile[y][x - 1] == 'G'
 								 &&  typeOfTile[y][x + 1] == 'G')
 							{
 								//touched x axis
 								tileFrame = 2;
 							}
 							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
+								 &&  typeOfTile[y + 1][x] == 'G')
 							{
 								//touched y axis
 								tileFrame = 12;
 							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
+							else if (typeOfTile[y - 1][x] == 'G')
 							{
 								//touched y axis
 								tileFrame = 16;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
+							else if (typeOfTile[y + 1][x] == 'G')
 							{
 								//touched y axis
 								tileFrame = 8;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] != 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
+							else if (typeOfTile[y][x + 1] == 'G')
 							{
 								//touched y axis
 								tileFrame = 1;
 							}
-							else if (typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
+							else if (typeOfTile[y][x - 1] == 'G')
 							{
 								//touched y axis
 								tileFrame = 3;
 							}
 						}
 				}
-				
+
 				_LevelArray[y][x].setTileType(type, tileFrame);
 			}
 			
@@ -217,6 +196,8 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 
 	// close the file
 	inputFile.close();
+
+	NewBG("assets/Levels/World" + std::to_string(m_CurrentWorld) + "/BG.png");
 
 	return _LevelArray;
 
