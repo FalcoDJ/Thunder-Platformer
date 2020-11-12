@@ -105,8 +105,7 @@ RectF Creature::getSpriteD()
 
 void Creature::spawn(VectorI _start)
 {
-    pos.x = _start.x - size.x / 2;
-    pos.y = _start.y - size.y / 2;
+    center(_start);
     vel *= 0;
     m_JumpTimer.Restart();
 }
@@ -143,10 +142,10 @@ void Creature::resolveCollision(Rect &Targ)
     float Aw = (size.x + Targ.size.x) / 2;
     float Ah = (size.y + Targ.size.y) / 2;
 
-    float overlap_x = Aw - Hd * Hd;
-    float overlap_y = Ah - Vd * Vd;
+    float overlap_x = Hd * Hd - Aw;
+    float overlap_y = Vd * Vd - Ah;
 
-    if (overlap_x < overlap_y)
+    if (overlap_x > overlap_y)
     {
         //If collision happens on X axis
         vel.x = Targ.vel.x;

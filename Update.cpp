@@ -22,10 +22,8 @@ void Thunder::update()
         m_TileMap[y][x].update(GetElapsedTime());
 
 
-
         m_Player.update(GetElapsedTime());
-
-        std::cout << "Player X: " << m_Player.center().x << " Player Y: " << m_Player.center().y << std::endl;
+        std::cout << m_Player.vel.x << std::endl;
 
         m_Player.fall();
 
@@ -46,8 +44,20 @@ void Thunder::update()
                 {
                     m_TileMap[y][x].setTileType('*');
                 }
-                else if (m_TileMap[y][x].getType() == TileTypes::LAVA 
-                ||       m_TileMap[y][x].getType() == TileTypes::SPIKE)
+                else if (m_TileMap[y][x].getType() == TileTypes::LAVA)
+                {
+                    if (m_Player.getState() != Creature::state::INVINSIBLE)
+                    {
+                        m_ScreenShake = true;
+                        m_Player.stopFalling(m_TileMap[y][x].pos.y);
+                        if (m_Player.dye()) //If player is out of lives
+                        {
+                            m_GameState = state::GAMEOVER;
+                        }
+                        m_Player.vel.y = -900;
+                    }
+                }
+                else if (m_TileMap[y][x].getType() == TileTypes::SPIKE)
                 {
                     if (m_Player.getState() != Creature::state::INVINSIBLE)
                     {
@@ -64,8 +74,7 @@ void Thunder::update()
             
         }
 
-        m_Camera.pos.x = m_Player.pos.x - 148;
-        m_Camera.pos.y = m_Player.pos.y - 100;
+        m_Camera.center(m_Player.pos);
         
         //Camera Cant Go Past screen edges
         
@@ -102,7 +111,7 @@ void Thunder::update()
 
         // ! Put camera boundaries here !
 
-        //If player goes outside of camera end him ( Game Over :( !)
+        //If player goes outside of camera end him! [ Game Over :( ]
         if (!m_Player.detectCollision(m_Camera, GetElapsedTime()))
         {
             m_GameState = state::GAMEOVER;

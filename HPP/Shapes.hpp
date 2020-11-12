@@ -15,6 +15,11 @@ struct Rect
         num centerY = pos.y + size.y / 2;
         return Vector<num>({centerX, centerY});
     }
+    void center(Vector<num> centPos)
+    {
+        pos.x = centPos.x - size.x / 2;
+        pos.y = centPos.y - size.y / 2;
+    }
     num right()
     {
         return pos.x + size.x;

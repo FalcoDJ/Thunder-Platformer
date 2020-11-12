@@ -38,7 +38,7 @@ void Thunder::draw()
         if (m_GameState == state::PAUSED)
         {
             SetDrawTarget(m_LayerUI);
-            FillRect(0, 0, m_ScreenSize.x, m_ScreenSize.y, olc::Pixel(28,28,28));
+            FillRect(0, 0, m_ScreenSize.x, m_ScreenSize.y, olc::Pixel(48,48,48));
         }
     }
 }
