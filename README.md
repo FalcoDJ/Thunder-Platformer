@@ -1,6 +1,5 @@
 
 # Thunder-Platformer
-<<<<<<< HEAD
 
 ## Compiling on Linux
 
@@ -66,13 +65,3 @@ pacman -S mingw-w64-i686-make
 3. Open (windows) command line, type gcc -v (it should tell you the version of gcc)
 4. Still in the command line, cd into the directory where you downloaded Thunder-Platformer's source code. (e.g. cd Path\To\Directory)
 5. To (finally) compile the game type: ```g++ -o Thunder.exe *.cpp -luser32 -lgdi32 -lopengl32 -lgdiplus -lShlwapi -ldwmapi -lstdc++fs -static -std=c++17``` into the command line and execute it.
- 
-=======
- ## Compiling on Linux
- ```bash
- git clone https://github.com/FalcoDJ/Thunder-Platformer.git
- cd Thunder-Platformer/
- make
- ./Thunder
- ```
->>>>>>> master
