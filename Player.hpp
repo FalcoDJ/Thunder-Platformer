@@ -10,6 +10,7 @@ public:
     Player();
     ~Player(){}
     bool handleInput(olc::PixelGameEngine *pge) override;
+    void animate() override;
 
 private:
 
