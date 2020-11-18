@@ -21,9 +21,7 @@ void Thunder::update()
         for (int x = 0; x < m_LevelSize.x; x++)
         m_TileMap[y][x].update(GetElapsedTime());
 
-
         m_Player.update(GetElapsedTime());
-        std::cout << m_Player.vel.x << std::endl;
 
         m_Player.fall();
 

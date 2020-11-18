@@ -9,7 +9,7 @@ void Thunder::draw()
     Clear(olc::BLANK);
 
     SetDrawTarget(m_LayerBG);
-    Clear(olc::Pixel(34,128,218));
+    Clear(olc::Pixel(0,153,219));
 
     if (m_GameState == state::GAMEOVER) // GameOver
     {
@@ -38,7 +38,8 @@ void Thunder::draw()
         if (m_GameState == state::PAUSED)
         {
             SetDrawTarget(m_LayerUI);
-            FillRect(0, 0, m_ScreenSize.x, m_ScreenSize.y, olc::Pixel(48,48,48));
+            Clear(olc::BLACK);
+            DrawDecal({(m_ScreenSize/2).x - 32, (m_ScreenSize/2).y - 16}, m_PausedIMG);
         }
     }
 }

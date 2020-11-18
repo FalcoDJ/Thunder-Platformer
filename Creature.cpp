@@ -65,7 +65,7 @@ void Creature::update(float ElapsedTime)
     if (m_IsJumping) //Jump
     {
         m_JumpTimer.Restart();
-        vel.y = -(m_JumpSpeed);
+        vel.y = -m_JumpSpeed;
         m_OnGround = false;
         m_IsJumping = true;
     }

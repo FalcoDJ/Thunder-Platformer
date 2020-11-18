@@ -38,6 +38,9 @@ private:
     state m_GameState;
 
     olc::Decal* m_Background = nullptr;
+    olc::Decal* m_PausedIMG = nullptr;
+
+    olc::Decal* m_LevelDecal = nullptr;
 
     Player m_Player;
 
@@ -84,7 +87,11 @@ public:
         SetPixelMode(olc::Pixel::ALPHA);
         Clear(olc::BLANK);
 
-        SetDrawTarget(m_LayerUI);
+        SetDrawTarget(nullptr);
+
+        olc::Sprite* tempSprite = new olc::Sprite("assets/Paused.png");
+
+        m_PausedIMG = new olc::Decal(tempSprite);
 
         m_GameState = state::GAMEOVER;
         
@@ -124,7 +131,7 @@ public:
         // | Animate           |
         // 0-------------------0
 
-        if (m_AnimTimer.GetElapsedTime() > 0.048f)
+        if (m_AnimTimer.GetElapsedTime() > 0.08f)
         {
             if (m_GameState == state::GAMEOVER) // GameOver
             {

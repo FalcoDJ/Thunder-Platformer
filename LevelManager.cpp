@@ -82,106 +82,166 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 					tileFrame = 10;
 
 					if (y < m_LevelSize.y - 1)
+					{
+						if (typeOfTile[y - 1][x] == 'G'
+						&&  typeOfTile[y + 1][x] == 'G'
+						&&  typeOfTile[y][x - 1] == 'G'
+						&&  typeOfTile[y][x + 1] == 'G')
 						{
-							if (typeOfTile[y - 1][x] == 'G'
-							&&  typeOfTile[y + 1][x] == 'G'
-							&&  typeOfTile[y][x - 1] == 'G'
-							&&  typeOfTile[y][x + 1] == 'G')
+							//Surrounded by ground
+							tileFrame = 10;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y + 1][x] == 'G'
+								&&  typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y][x + 1] != 'G')
+						{
+							//Surrounded by three (none on right)
+							tileFrame = 11;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y + 1][x] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G'
+								&&  typeOfTile[y][x - 1] != 'G')
+						{
+							//Surrounded by three (none on left)
+							tileFrame = 9;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y + 1][x] != 'G'
+								&&  typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G')
+						{
+							//Surrounded by three (none on bottom)
+							tileFrame = 14;
+						}
+						else if (typeOfTile[y + 1][x] == 'G'
+								&&  typeOfTile[y - 1][x] != 'G'
+								&&  typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G')
+						{
+							//Surrounded by three (none on top)
+							tileFrame = 6;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y + 1][x] != 'G'
+								&&  typeOfTile[y][x + 1] != 'G')
+						{
+							//touched on top & right
+							tileFrame = 15;
+						}
+						else if (typeOfTile[y - 1][x] != 'G'
+								&&  typeOfTile[y + 1][x] != 'G'
+								&&  typeOfTile[y][x - 1] != 'G'
+								&&  typeOfTile[y][x + 1] != 'G')
+						{
+							//Surrounded by three (none on bottom)
+							tileFrame = 4;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G')
+						{
+							//touched on top & left
+							tileFrame = 13;
+						}
+						else if (typeOfTile[y + 1][x] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G')
+						{
+							//touched on bottom & right
+							tileFrame = 5;
+						}
+						else if (typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y + 1][x] == 'G')
+						{
+							//touched on bottom & left
+							tileFrame = 7;
+						}
+						else if (typeOfTile[y][x - 1] == 'G'
+								&&  typeOfTile[y][x + 1] == 'G')
+						{
+							//touched x axis
+							tileFrame = 2;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+								&&  typeOfTile[y + 1][x] == 'G')
+						{
+							//touched y axis
+							tileFrame = 12;
+						}
+						else if (typeOfTile[y - 1][x] == 'G')
+						{
+							//touched y axis
+							tileFrame = 16;
+						}
+						else if (typeOfTile[y + 1][x] == 'G')
+						{
+							//touched y axis
+							tileFrame = 8;
+						}
+						else if (typeOfTile[y][x + 1] == 'G')
+						{
+							//touched y axis
+							tileFrame = 1;
+						}
+						else if (typeOfTile[y][x - 1] == 'G')
+						{
+							//touched y axis
+							tileFrame = 3;
+						}
+					}
+					else
+					{
+						if (typeOfTile[y - 1][x] == 'G'
+						&&  typeOfTile[y][x - 1] == 'G'
+						&&  typeOfTile[y][x + 1] == 'G')
+						{
+							tileFrame = 14;
+						}
+						else if (typeOfTile[y - 1][x] == 'G'
+							&&   typeOfTile[y][x + 1] == 'G'
+							&&   typeOfTile[y][x - 1] != 'G')
 							{
-								//Surrounded by ground
-								tileFrame = 10;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
-							{
-								//Surrounded by three (none on right)
-								tileFrame = 11;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G'
-								 &&  typeOfTile[y][x - 1] != 'G')
-							{
-								//Surrounded by three (none on left)
-								tileFrame = 9;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
-							{
-								//Surrounded by three (none on bottom)
-								tileFrame = 14;
-							}
-							else if (typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y - 1][x] != 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
-							{
-								//Surrounded by three (none on top)
-								tileFrame = 6;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y + 1][x] != 'G'
-								 &&  typeOfTile[y][x + 1] != 'G')
-							{
-								//touched on top & right
-								tileFrame = 15;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
-							{
-								//touched on top & left
 								tileFrame = 13;
 							}
-							else if (typeOfTile[y + 1][x] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
+						else if (typeOfTile[y - 1][x] == 'G'
+							&&   typeOfTile[y][x + 1] != 'G'
+							&&   typeOfTile[y][x - 1] == 'G')
 							{
-								//touched on bottom & right
-								tileFrame = 5;
+								tileFrame = 15;
 							}
-							else if (typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y + 1][x] == 'G')
+						else if (typeOfTile[y - 1][x] == 'G'
+							&&   typeOfTile[y][x + 1] != 'G'
+							&&   typeOfTile[y][x - 1] != 'G')
 							{
-								//touched on bottom & left
-								tileFrame = 7;
-							}
-							else if (typeOfTile[y][x - 1] == 'G'
-								 &&  typeOfTile[y][x + 1] == 'G')
-							{
-								//touched x axis
-								tileFrame = 2;
-							}
-							else if (typeOfTile[y - 1][x] == 'G'
-								 &&  typeOfTile[y + 1][x] == 'G')
-							{
-								//touched y axis
-								tileFrame = 12;
-							}
-							else if (typeOfTile[y - 1][x] == 'G')
-							{
-								//touched y axis
 								tileFrame = 16;
 							}
-							else if (typeOfTile[y + 1][x] == 'G')
+						else if (typeOfTile[y - 1][x] != 'G'
+							&&   typeOfTile[y][x + 1] == 'G'
+							&&   typeOfTile[y][x - 1] == 'G')
 							{
-								//touched y axis
-								tileFrame = 8;
+								tileFrame = 2;
 							}
-							else if (typeOfTile[y][x + 1] == 'G')
+						else if (typeOfTile[y - 1][x] != 'G'
+							&&   typeOfTile[y][x + 1] == 'G'
+							&&   typeOfTile[y][x - 1] != 'G')
 							{
-								//touched y axis
 								tileFrame = 1;
 							}
-							else if (typeOfTile[y][x - 1] == 'G')
+						else if (typeOfTile[y - 1][x] != 'G'
+							&&   typeOfTile[y][x + 1] != 'G'
+							&&   typeOfTile[y][x - 1] == 'G')
 							{
-								//touched y axis
 								tileFrame = 3;
 							}
-						}
+						else if (typeOfTile[y - 1][x] != 'G'
+							&&   typeOfTile[y][x + 1] != 'G'
+							&&   typeOfTile[y][x - 1] != 'G')
+							{
+								tileFrame = 4;
+							}
+					}
+					
 				}
 
 				_LevelArray[y][x].setTileType(type, tileFrame);
