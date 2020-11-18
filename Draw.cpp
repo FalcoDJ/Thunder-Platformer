@@ -34,6 +34,8 @@ void Thunder::draw()
         }
 
         m_Player.drawSelf(this, m_Camera.pos);
+        //Health Bar
+        FillRect({8,8}, {(m_Player.getLives()/5)*64, 4}, olc::RED);
 
         if (m_GameState == state::PAUSED)
         {
