@@ -14,16 +14,33 @@ enum class state {PLAYING, PAUSED, GAMEOVER, NEXTLEVEL};
 class Thunder : public olc::PixelGameEngine
 {
 public:
+    VectorI m_ScreenSize = {320,180};
+
 	Thunder()
 	{
 		sAppName = "Thunder Platformer";
 	}
 
-public:
+private:
+    void handleInput();
+    void update();
+    void draw();
+
+private:
+    int m_LayerUI = 1; //User interface layer
+    int m_LayerMG = 2; //Main Game layer
+    int m_LayerBG = 3; //Background layer
+
+private:
 
     Clock m_AnimTimer;
 
     state m_GameState;
+
+    olc::Decal* m_Background = nullptr;
+    olc::Decal* m_PausedIMG = nullptr;
+
+    olc::Decal* m_LevelDecal = nullptr;
 
     Player m_Player;
 
@@ -31,25 +48,59 @@ public:
     VectorI m_LevelSize;
     
     int m_CurrentLevel = 0;
-    int m_MAX_Level = 2;
+    int m_MAX_Level = 3;
     int m_CurrentWorld = 1;
     int m_MAX_World = 1;
     VectorI m_StartingPoint;
     RectF m_GoalPosition;
 
     RectF m_Camera = RectF({0,0},{320,180});
+    int m_MAX_ShakeMag = 4;
+    bool m_ScreenShake;
 
+    void NewBG(std::string _path2S = "assets/GameOver.png");
     Tile** LevelManager(int _Level = 0, int _World = 0);
     void NextLevel(state _Gst = state::PAUSED);
 
 public:
 	bool OnUserCreate() override
 	{
-        m_GameState = state::GAMEOVER;
+        m_LayerUI = CreateLayer();
+        EnableLayer(m_LayerUI, true);
+        SetDrawTarget(m_LayerUI);
+        SetPixelMode(olc::Pixel::ALPHA);
+        Clear(olc::BLANK);
 
+        m_LayerMG = CreateLayer();
+        EnableLayer(m_LayerMG, true);
+        SetDrawTarget(m_LayerMG);
+        SetPixelMode(olc::Pixel::ALPHA);
+        Clear(olc::BLANK);
+
+        m_LayerBG = CreateLayer();
+        EnableLayer(m_LayerBG, true);
+        SetDrawTarget(m_LayerBG);
+        SetPixelMode(olc::Pixel::ALPHA);
+        Clear(olc::BLANK);
+
+        SetDrawTarget(nullptr);
+        SetPixelMode(olc::Pixel::ALPHA);
+        Clear(olc::BLANK);
+
+        SetDrawTarget(nullptr);
+
+        olc::Sprite* tempSprite = new olc::Sprite("assets/Paused.png");
+
+        m_PausedIMG = new olc::Decal(tempSprite);
+
+        m_GameState = state::GAMEOVER;
+        
         m_Player.spawn(m_StartingPoint);
 
         m_Player.Setup();
+
+        NewBG();
+        
 		return true;
 	}
 
@@ -59,139 +110,20 @@ public:
         // |    Input/Sound    |
         // 0-------------------0
 
-        if (GetKey(olc::ESCAPE).bPressed) // Close window if esc is pressed
-        {
-            return false;
-        }
-
-        if (GetKey(olc::Key::ENTER).bPressed) // If Enter is pressed
-		{
-            if (m_GameState != state::NEXTLEVEL) //Dont allow the game to run during level loading
+            if (GetKey(olc::ESCAPE).bPressed) // Close window if esc is pressed
             {
-                if (m_GameState == state::GAMEOVER)
-                {
-
-                    m_CurrentLevel = 0;
-                    m_CurrentWorld = 1;
-
-                    m_Player.reset();
-
-                    //Restart the Game
-                    NextLevel(state::PLAYING);
-                }
-                else if (m_GameState != state::PLAYING)
-                {
-                    m_GameState = state::PLAYING;
-                }
-                else
-                {
-                    m_GameState = state::PAUSED;
-                }
-                
+                return false;
             }
-		}
-        if (m_GameState == state::PLAYING) // Playing
-        {
 
-            if (m_Player.handleInput(this)) //C heck for input from player
-            {
-                // Play a jump sound
-            }
-        }
+            handleInput();
 
         // #####################
 
         // 0-------------------0
         // | Update            |
         // 0-------------------0
-        if (m_GameState == state::NEXTLEVEL) // NextLevel
-        {
-            NextLevel();
-        }
-        if (m_GameState == state::GAMEOVER) // GameOver
-        {
-
-        }
-        if (m_GameState == state::PAUSED) // Paused
-        {
-
-        }
-
-        if (m_GameState == state::PLAYING) //Playing
-        {
-            for (int y = 0; y < m_LevelSize.y; y++)
-            for (int x = 0; x < m_LevelSize.x; x++)
-            m_TileMap[y][x].pos += m_TileMap[y][x].vel * GetElapsedTime();
-
-            m_Player.update(GetElapsedTime());
-
-            m_Player.fall();
-
-            for (int y = 0; y < m_LevelSize.y; y++)
-            for (int x = 0; x < m_LevelSize.x; x++)
-            if (m_TileMap[y][x].getType() != TileTypes::AIR && 
-                m_Player.detectCollision(m_TileMap[y][x], GetElapsedTime()))
-            {
-                if (m_TileMap[y][x].getType() == TileTypes::GOAL)
-                m_GameState = state::NEXTLEVEL;
-                else
-                {
-                    if (m_TileMap[y][x].getType() == TileTypes::GROUND)
-                    {
-                        m_Player.resolveCollision(m_TileMap[y][x]);
-                    }
-                    else if (m_TileMap[y][x].getType() == TileTypes::COIN)
-                    {
-                        m_TileMap[y][x].setTileType('*');
-                    }
-                    else if (m_TileMap[y][x].getType() == TileTypes::LAVA)
-                    {
-                        if (m_Player.dye()) //If player is out of lives
-                        {
-                            m_GameState = state::GAMEOVER;
-                        }
-                        else
-                        { 
-                            m_Player.stopFalling(m_TileMap[y][x].pos.y);
-                            m_Player.vel.y = -900;
-                        }
-                        
-                    }
-                }
-                
-            }
-
-            m_Camera.pos.x = m_Player.pos.x - 148;
-            m_Camera.pos.y = m_Player.pos.y - 100;
-            
-            //Camera Cant Go Past screen edges
-            
-            // X
-            if (m_Camera.pos.x < 0)
-            {
-                m_Camera.pos.x = 0;
-            }
-            if (m_Camera.right() > m_LevelSize.x * 16)
-            {
-                m_Camera.pos.x = m_LevelSize.x * 16 - m_Camera.size.x;
-            }
-
-            // Y 
-            if (m_Camera.bottom() > m_LevelSize.y * 16)
-            {
-                m_Camera.pos.y = m_LevelSize.y * 16 - m_Camera.size.y;
-            }
-
-            // ! Put camera boundaries here !
-
-            //If player goes outside of camera end him ( Game Over :( !)
-            if (!detectCollision(m_Player, m_Camera))
-            {
-                m_GameState = state::GAMEOVER;
-            }
-        }
-
         
+            update();
 
         // #####################
 
@@ -199,7 +131,7 @@ public:
         // | Animate           |
         // 0-------------------0
 
-        if (m_AnimTimer.GetElapsedTime() > 0.048f)
+        if (m_AnimTimer.GetElapsedTime() > 0.08f)
         {
             if (m_GameState == state::GAMEOVER) // GameOver
             {
@@ -222,27 +154,8 @@ public:
 		// 0-------------------0
         // | Draw              |
         // 0-------------------0
-        Clear(olc::Pixel(34,128,218));
-
-        if (m_GameState == state::GAMEOVER) // GameOver
-        {
-            Clear(olc::BLACK);
-        }
-        if (m_GameState == state::PAUSED) // Paused
-        {
-
-        }
-        if (m_GameState == state::PLAYING) //Playing
-        {
-            for (int y = 0; y < m_LevelSize.y; y++)
-            for (int x = 0; x < m_LevelSize.x; x++)
-            {
-                if (m_TileMap[y][x].getType() != TileTypes::AIR && m_TileMap[y][x].getType() != TileTypes::GOAL)
-                m_TileMap[y][x].drawSelf(this, m_Camera.pos);
-            }
-
-            m_Player.drawSelf(this, m_Camera.pos);
-        }
+        
+            draw();
 
         // #####################
 			
@@ -251,7 +164,7 @@ public:
 
     bool OnUserDestroy() override
     {
-        for (int y = 0; y < 11; y++)
+        for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
         delete[] m_TileMap;
         

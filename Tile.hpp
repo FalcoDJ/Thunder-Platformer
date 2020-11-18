@@ -4,7 +4,7 @@
 #include "HPP/Shapes.hpp"
 #include "HPP/olcPixelGameEngine.h"
 
-enum class TileTypes {AIR, GROUND, ONE_WAY, WATER, ICE, LAVA, COIN, GOAL};
+enum class TileTypes {AIR, GROUND, ONE_WAY, WATER, ICE, LAVA, SPIKE, COIN, GOAL};
 
 class Tile : public RectF
 {
@@ -25,13 +25,12 @@ class Tile : public RectF
 
     protected:
     std::string pathToSprite = "assets/Tiles.png";
-    RectF m_SpriteData = RectF({0,0}, {16,16});
+    VectorF m_SpriteData = {16,16};
     olc::Sprite* m_Sprite = nullptr;
     olc::Decal* m_Decal = nullptr;
 
-    int m_FramesPerRow = 4;
-    int m_FramesPerCol = 6;
-    int m_MAX_Frames = m_FramesPerRow * m_FramesPerCol;
+    VectorI m_FramesPer = {4, 6};
+    int m_MAX_Frames = m_FramesPer.x * m_FramesPer.y;
     int m_CurFrame = 0;
 
     TileTypes m_MyType;

@@ -11,6 +11,8 @@ public:
     Creature(){};
     ~Creature(){delete m_Sprite, m_Decal;}
     
+    enum class state {DEFAULT, INVINSIBLE};
+
     virtual bool handleInput(olc::PixelGameEngine *pge); //Define in derived class
     virtual void animate();  //Define in derived class
     void update(float ElapsedTime);
@@ -22,17 +24,20 @@ public:
     RectF getSpriteD();
 
     virtual void spawn(VectorI _start);
-    virtual void reset(); //TODO - Edit this later
+    virtual void reset();
 
     float getHealth(){return m_Health;}
     float getLives(){return m_Lives;}
 
+    state getState() {return m_State;}
     bool dye()
     {
         if (m_Lives < 1)
         return true;
         else
         {
+            m_StateTimer.Restart();
+            m_State = state::INVINSIBLE;
             m_Health = 0;
             m_Lives -= 1;
             return false;
@@ -48,12 +53,15 @@ public:
 
 protected:
     std::string m_PathToSprite;
-    RectF m_SpriteData;
+    VectorF m_SpriteData;
     olc::Sprite* m_Sprite = nullptr;
     olc::Decal* m_Decal = nullptr;
     
-    int m_FramesPerRow;
-    int m_FramesPerCol;
+    state m_State = state::DEFAULT;
+    Clock m_StateTimer;
+    float m_MAX_InvincibleT;
+
+    VectorI m_FramesPer;
     int m_MAX_Frames;
     int m_CurFrame;
 

@@ -8,7 +8,7 @@ void Thunder::NextLevel(state _Gst)
 
     // Load next level from text file 
     // using the LevelManager function
-    m_TileMap = LevelManager(/* IF a specific level must be loaded put the level and world num here */);
+    m_TileMap = LevelManager();
 
     for (int y = 0; y < m_LevelSize.y; y++)
     for (int x = 0; x < m_LevelSize.x; x++)
@@ -16,6 +16,7 @@ void Thunder::NextLevel(state _Gst)
 
     // ! Spawn Player(s) !
     m_Player.spawn(m_StartingPoint);
+    std::cout << "Player X: " << m_Player.center().x << " Player Y: " << m_Player.center().y << std::endl;
 
     m_GameState = _Gst;
 }

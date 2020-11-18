@@ -5,16 +5,17 @@ Player::Player()
     //Define sprite stuff
     m_PathToSprite = "assets/Player/Sprites.png";
     size = {24,24};
-    m_FramesPerRow = 10;
-    m_FramesPerCol = 1;
-    m_MAX_Frames = m_FramesPerRow * m_FramesPerCol;
+    m_FramesPer = {9, 1};
+    m_MAX_Frames = m_FramesPer.x * m_FramesPer.y;
     m_CurFrame = 0;
-    m_SpriteData = RectF({0,0},{24,24});
+    m_SpriteData = {24,24};
 
     //Initialize some stuff
     m_OnGround = true;
     m_MAX_Lives = 5;
     m_Lives = 5;
+
+    m_MAX_InvincibleT = 0.096;
 
     //Define speed stuff
     m_MAX_Acceleration = {300, 200};
@@ -26,7 +27,7 @@ bool Player::handleInput(olc::PixelGameEngine* pge)
 {
     m_JustJumped = false;
 
-    if (pge->GetKey(olc::Key::SPACE).bHeld && m_OnGround) //Jump
+    if ((pge->GetKey(olc::Key::SPACE).bHeld) && m_OnGround) //Jump
     {
         m_JustJumped = true;
         m_IsJumping = true;
@@ -55,4 +56,10 @@ bool Player::handleInput(olc::PixelGameEngine* pge)
     
 
     return m_JustJumped;
+}
+
+void Player::animate()
+{
+    m_CurFrame++;
+    if (m_CurFrame > m_MAX_Frames-1) m_CurFrame -= m_MAX_Frames-1;
 }

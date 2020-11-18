@@ -4,7 +4,7 @@
 int main()
 {
 	Thunder game;
-	if (game.Construct(320, 180, 3, 3))
+	if (game.Construct(game.m_ScreenSize.x, game.m_ScreenSize.y, 3, 3))
 		game.Start();
 
 	return 0;

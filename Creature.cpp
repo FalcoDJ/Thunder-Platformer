@@ -65,7 +65,7 @@ void Creature::update(float ElapsedTime)
     if (m_IsJumping) //Jump
     {
         m_JumpTimer.Restart();
-        vel.y = -(m_JumpSpeed);
+        vel.y = -m_JumpSpeed;
         m_OnGround = false;
         m_IsJumping = true;
     }
@@ -73,11 +73,23 @@ void Creature::update(float ElapsedTime)
     //Apply velocities to position
     pos += vel * ElapsedTime;
 
+    if (m_State != state::DEFAULT)
+    {
+        if (m_State == state::INVINSIBLE)
+        {
+            m_Health = m_MAX_Health;
+            if (m_StateTimer.GetElapsedTime() > m_MAX_InvincibleT)
+            {
+                m_State = state::DEFAULT;
+            }
+        }
+    }
+
 }
 
 void Creature::drawSelf(olc::PixelGameEngine *pge, VectorF Camera)
 {
-    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPerRow, m_FramesPerCol, m_CurFrame, Camera);
+    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPer, m_CurFrame, Camera);
 }
 
 void Creature::Setup()
@@ -93,12 +105,9 @@ RectF Creature::getSpriteD()
 
 void Creature::spawn(VectorI _start)
 {
-    pos.x = _start.x - size.x / 2;
-    pos.y = _start.y - size.y;
+    center(_start);
     vel *= 0;
-    
-    m_Lives = m_MAX_Lives;
-    m_Health = m_MAX_Health;
+    m_JumpTimer.Restart();
 }
 void Creature::reset()
 {
@@ -130,13 +139,13 @@ void Creature::resolveCollision(Rect &Targ)
 {
     float Hd = center().x - Targ.center().x;
     float Vd = center().y - Targ.center().y;
-    float Aw = (size.x + Targ.size.x) * 0.5;
-    float Ah = (size.y + Targ.size.y) * 0.5;
+    float Aw = (size.x + Targ.size.x) / 2;
+    float Ah = (size.y + Targ.size.y) / 2;
 
-    float overlap_x = Aw - abs(Hd);
-    float overlap_y = Ah - abs(Vd);
+    float overlap_x = Hd * Hd - Aw;
+    float overlap_y = Vd * Vd - Ah;
 
-    if (overlap_x < overlap_y)
+    if (overlap_x > overlap_y)
     {
         //If collision happens on X axis
         vel.x = Targ.vel.x;
@@ -157,7 +166,7 @@ void Creature::resolveCollision(Rect &Targ)
         
         if (Vd > 0)
         {
-            pos.y += Targ.bottom() - pos.y;
+            pos.y = Targ.bottom();
         }
         else
         {
