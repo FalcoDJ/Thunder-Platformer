@@ -5,11 +5,14 @@ void Thunder::draw()
     SetDrawTarget(m_LayerUI);
     Clear(olc::BLANK);
 
+    if (m_GameState != state::PAUSED)
+    {
     SetDrawTarget(m_LayerMG);
     Clear(olc::BLANK);
+    }
 
     SetDrawTarget(m_LayerBG);
-    Clear(olc::Pixel(0,153,219));
+    Clear(m_BGcolor);
 
     if (m_GameState == state::GAMEOVER) // GameOver
     {
@@ -56,16 +59,24 @@ void Thunder::draw()
 
         if (m_GameState == state::PAUSED)
         {
-            Clear(olc::BLACK);
-            DrawDecal({(m_ScreenSize/2).x - 32, (m_ScreenSize/2).y - 16}, m_PausedIMG);
+            if (StartedNewLevel)
+            Clear(olc::BLANK);
+            else
+            {
+                Clear(olc::BLACK);
+            }
+            
+            FillRect({124, 54}, {72, 48}, olc::BLACK);
+            DrawDecal({128, 58}, m_PausedIMG);
             //Health Bar
-            FillRect({112,32}, {(m_Player.getLives()/5)*96, 8}, olc::RED);
-            DrawRect({7,7}, {64,4}, olc::BLACK);
+            FillRect({128,94}, {(m_Player.getLives()/5)*64, 4}, olc::GREEN);
+            FillRect({(m_Player.getLives()/5)*64 + 128,94}, {64 - (m_Player.getLives()/5)*64,4}, olc::RED);
         }
         else
         {   
             //Health Bar
-            FillRect({8,8}, {(m_Player.getLives()/5)*64, 4}, olc::RED);
+            FillRect({8,8}, {(m_Player.getLives()/5)*64, 4}, olc::GREEN);
+            FillRect({(m_Player.getLives()/5)*64 + 8,8}, {64 - (m_Player.getLives()/5)*64,4}, olc::RED);
             DrawRect({7,7}, {64,4}, olc::BLACK);
         }
     }

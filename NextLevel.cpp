@@ -16,7 +16,8 @@ void Thunder::NextLevel(state _Gst)
 
     // ! Spawn Player(s) !
     m_Player.spawn(m_StartingPoint);
-    std::cout << "Player X: " << m_Player.center().x << " Player Y: " << m_Player.center().y << std::endl;
 
-    m_GameState = _Gst;
+    StartedNewLevel = false;
+
+    m_GameState = _Gst;    
 }

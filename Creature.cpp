@@ -23,16 +23,13 @@ void Creature::update(float ElapsedTime)
     {
         vel.x += m_Acceleration.x;
     }
-    if (abs(vel.x) > m_MAX_Acceleration.x) //Maximum Velocity
+    if (vel.x < -m_MAX_Acceleration.x) //Is moving Left
     {
-        if (vel.x < 0) //Is moving Left
-        {
-            vel.x = -m_MAX_Acceleration.x;
-        }
-        else //Is moving Right
-        {
-            vel.x = m_MAX_Acceleration.x;
-        }
+        vel.x = -m_MAX_Acceleration.x;
+    }
+    if (vel.x > m_MAX_Acceleration.x)  //Is moving Right
+    {
+        vel.x = m_MAX_Acceleration.x;
     }
     if (vel.x != 0 && !m_MovingLeft && !m_MovingRight) //Drag
     {
@@ -44,7 +41,7 @@ void Creature::update(float ElapsedTime)
         {
             vel.x += m_Acceleration.x;
         }
-        if (abs(vel.x) < m_Acceleration.x) //Precausions!
+        if (vel.x * vel.x < m_Acceleration.x * m_Acceleration.x) //Complete stop if vel.x is too small
         {
             vel.x = 0;
         }
