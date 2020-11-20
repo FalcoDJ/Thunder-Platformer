@@ -9,6 +9,7 @@ Player::Player()
     m_MAX_Frames = m_FramesPer.x * m_FramesPer.y;
     m_CurFrame = 0;
     m_SpriteData = {24,24};
+    m_Flip = olc::Sprite::NONE;
 
     //Initialize some stuff
     m_OnGround = true;
@@ -62,4 +63,10 @@ void Player::animate()
 {
     m_CurFrame++;
     if (m_CurFrame > m_MAX_Frames-1) m_CurFrame -= m_MAX_Frames-1;
+
+    if (vel.x < 0 || m_MovingLeft)
+    m_Flip = olc::Sprite::HORIZ;
+    else if (vel.x > 0 || m_MovingRight)
+    m_Flip = olc::Sprite::NONE;
+    
 }

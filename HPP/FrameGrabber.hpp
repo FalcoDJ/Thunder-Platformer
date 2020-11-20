@@ -5,14 +5,21 @@
 #include "Shapes.hpp"
 
 template <typename num>
-void DrawDecalFrame(olc::PixelGameEngine *pge, olc::Decal *Decal, Vector<num> Pos, Vector<num> SpriteSize, VectorI framesPer, int currentFrame, Vector<num> Camera = {0,0})
+void DrawDecalFrame(olc::PixelGameEngine *pge, olc::Decal *Decal, Vector<num> Pos, Vector<num> SpriteSize, VectorI framesPer, int currentFrame, Vector<num> Camera = {0,0}, olc::Sprite::Flip flip = olc::Sprite::Flip::NONE)
 {
+  int hfl = 1;
+  if (flip == olc::Sprite::Flip::HORIZ)
+  {
+    hfl = -1;
+    Pos.x += SpriteSize.x;
+  }
+
   int spriteSheetRow = (currentFrame / framesPer.x);
   int spriteSheetColumn = (currentFrame % framesPer.x);
   int spriteSheetX = (spriteSheetColumn * SpriteSize.x);
   int spriteSheetY = (spriteSheetRow * SpriteSize.y);
 
-  pge->DrawPartialDecal({float(Pos.x - Camera.x), float(Pos.y - Camera.y)}, Decal, {float(spriteSheetX),float(spriteSheetY)}, {float(SpriteSize.x), float(SpriteSize.y)});
+  pge->DrawPartialDecal({float(Pos.x - Camera.x), float(Pos.y - Camera.y)}, Decal, {float(spriteSheetX),float(spriteSheetY)}, {float(SpriteSize.x), float(SpriteSize.y)}, {hfl,1});
 }
 
 template <typename num>

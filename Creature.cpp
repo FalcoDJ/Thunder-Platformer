@@ -86,7 +86,7 @@ void Creature::update(float ElapsedTime)
 
 void Creature::drawSelf(olc::PixelGameEngine *pge, VectorF Camera)
 {
-    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPer, m_CurFrame, Camera);
+    DrawDecalFrame(pge, m_Decal, pos, m_SpriteData, m_FramesPer, m_CurFrame, Camera, m_Flip);
 }
 
 void Creature::Setup()

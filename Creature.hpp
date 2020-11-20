@@ -56,6 +56,8 @@ protected:
     VectorF m_SpriteData;
     olc::Sprite* m_Sprite = nullptr;
     olc::Decal* m_Decal = nullptr;
+
+    olc::Sprite::Flip m_Flip;
     
     state m_State = state::DEFAULT;
     Clock m_StateTimer;
