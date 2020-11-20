@@ -8,7 +8,6 @@
 #include "Player.hpp"
 #include "Tile.hpp"
 
-
 enum class state {PLAYING, PAUSED, GAMEOVER, NEXTLEVEL};
 
 class Thunder : public olc::PixelGameEngine
@@ -30,6 +29,10 @@ private:
     int m_LayerUI = 1; //User interface layer
     int m_LayerMG = 2; //Main Game layer
     int m_LayerBG = 3; //Background layer
+
+    olc::Pixel m_BGcolor;
+
+    bool StartedNewLevel;
 
 private:
 

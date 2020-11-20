@@ -8,8 +8,8 @@
 ******************@*****************************************
 ******************@**********@***************@*********GGGGG
 ******************@**********@********@@@***********GGGGGGGG
-**********************@@*********V***********V***GGGGGGGGGGG
-****!*************V*********GGG**L***GGGGGG**L***GGGGGGGGGGG
+**********************@@*********L***********L***GGGGGGGGGGG
+****!*************L*********GGG**L***GGGGGG**L***GGGGGGGGGGG
 **************GG**L**GGGG********L***GGGGGG**L***GGGGGGGGGGG
 GGGGGGGGGG****GG**L**GGGG********L***GGGGGG**L***GGGGGGGGGGG
 GGGGGGGGGGLLLLGGLLLLLGGGGLLLLLLLLLLLLGGGGGGLLLLLLGGGGGGGGGGG

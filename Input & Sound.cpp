@@ -25,7 +25,10 @@ void Thunder::handleInput()
             {
                 m_GameState = state::PAUSED;
             }
-            
+            if (!StartedNewLevel)
+            {
+                StartedNewLevel = true;
+            }
         }
     }
     if (m_GameState == state::PLAYING) // Playing

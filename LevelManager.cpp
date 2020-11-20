@@ -24,6 +24,17 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 		m_CurrentWorld = _World;
 	}
 
+	switch (m_CurrentWorld)
+	{
+		case 1:
+		 m_BGcolor = olc::Pixel(0,153,219);
+		 break;
+		
+		default:
+		 m_BGcolor = olc::Pixel(0,153,219);
+		 break;
+	}
+
 	// Load the appropriate level from a text file
 	std::ifstream inputFile("assets/Levels/World" + std::to_string(m_CurrentWorld) + "/" + std::to_string(m_CurrentLevel) + ".txt");
 	std::string s;
@@ -71,7 +82,6 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 				type = '*';
 				m_StartingPoint.x = x * 16 + 8;
 				m_StartingPoint.y = y * 16 + 8;
-				std::cout << "X: " << m_StartingPoint.x << " Y:" << m_StartingPoint.y << std::endl;
 			}
 			else
 			{
@@ -242,6 +252,23 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 							}
 					}
 					
+				}
+
+				if (type == 'L')
+				{
+					tileFrame = 22;
+
+					if (y < m_LevelSize.y - 1)
+					{
+						if (typeOfTile[y][x-1] == 'L' || typeOfTile[y][x+1] == 'L')
+						{
+							//Do nothing
+						}
+						else if (typeOfTile[y - 1][x] == 'L')
+						{
+							tileFrame = 23;
+						}
+					}
 				}
 
 				_LevelArray[y][x].setTileType(type, tileFrame);
