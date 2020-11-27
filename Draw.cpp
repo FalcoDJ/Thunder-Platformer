@@ -3,16 +3,22 @@
 void Thunder::draw()
 {
     SetDrawTarget(m_LayerUI);
+    SetPixelMode(olc::Pixel::ALPHA);
     Clear(olc::BLANK);
+    SetPixelMode(olc::Pixel::NORMAL);
 
     if (m_GameState != state::PAUSED)
     {
     SetDrawTarget(m_LayerMG);
+    SetPixelMode(olc::Pixel::ALPHA);
     Clear(olc::BLANK);
+    SetPixelMode(olc::Pixel::NORMAL);
     }
 
     SetDrawTarget(m_LayerBG);
+    SetPixelMode(olc::Pixel::ALPHA);
     Clear(m_BGcolor);
+    SetPixelMode(olc::Pixel::NORMAL);
 
     if (m_GameState == state::GAMEOVER) // GameOver
     {

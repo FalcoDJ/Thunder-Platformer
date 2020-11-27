@@ -1,8 +1,13 @@
 #ifndef THUNDER_ENGINE
 #define THUNDER_ENGINE
 
+//Include game engine heade file
 #include "HPP/olcPixelGameEngine.h"
-#include "HPP/Vector.hpp"
+
+//Include game engine sound ext.
+#include "HPP/olcPGEX_Sound.h"
+
+//Include my header files
 #include "HPP/Shapes.hpp"
 #include "HPP/Collision.hpp"
 #include "Player.hpp"
@@ -25,7 +30,7 @@ private:
     void update();
     void draw();
 
-private:
+private: //Layer Stuff
     int m_LayerUI = 1; //User interface layer
     int m_LayerMG = 2; //Main Game layer
     int m_LayerBG = 3; //Background layer
@@ -34,7 +39,12 @@ private:
 
     bool StartedNewLevel;
 
-private:
+private: //Sound stuff
+    int sfxJump;
+    int sfxHurt;
+    int sfxPickup_Coin;
+
+private: // other stuff
 
     Clock m_AnimTimer;
 
@@ -58,7 +68,7 @@ private:
     RectF m_GoalPosition;
 
     RectF m_Camera = RectF({0,0},{320,180});
-    int m_MAX_ShakeMag = 4;
+    int m_MAX_ShakeMag = 6;
     bool m_ScreenShake;
 
     void NewBG(std::string _path2S = "assets/GameOver.png");
@@ -68,6 +78,13 @@ private:
 public:
 	bool OnUserCreate() override
 	{
+        //Initialize sound/audio
+        olc::SOUND::InitialiseAudio(44100, 1, 8, 512);
+
+        sfxJump = olc::SOUND::LoadAudioSample("assets/gen_SFX/Jump.wav");
+		sfxHurt = olc::SOUND::LoadAudioSample("assets/gen_SFX/Hurt.wav");
+		sfxPickup_Coin = olc::SOUND::LoadAudioSample("assets/gen_SFX/Pickup_Coin.wav");
+
         m_LayerUI = CreateLayer();
         EnableLayer(m_LayerUI, true);
         SetDrawTarget(m_LayerUI);
@@ -167,6 +184,8 @@ public:
 
     bool OnUserDestroy() override
     {
+        olc::SOUND::DestroyAudio();
+
         for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
         delete[] m_TileMap;
