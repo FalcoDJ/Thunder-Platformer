@@ -44,16 +44,19 @@ void Thunder::update()
                 }
                 else if (m_TileMap[y][x].getType() == TileTypes::LAVA)
                 {
+                    m_Player.stopFalling(m_TileMap[y][x].pos.y);
+
                     if (m_Player.getState() != Creature::state::INVINSIBLE)
                     {
                         m_ScreenShake = true;
-                        m_Player.stopFalling(m_TileMap[y][x].pos.y);
                         if (m_Player.dye()) //If player is out of lives
                         {
                             m_GameState = state::GAMEOVER;
                         }
                         m_Player.vel.y = -900;
                     }
+
+                    olc::SOUND::PlaySample(sfxHurt);
                 }
                 else if (m_TileMap[y][x].getType() == TileTypes::SPIKE)
                 {

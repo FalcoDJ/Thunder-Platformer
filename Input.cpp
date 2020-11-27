@@ -34,9 +34,10 @@ void Thunder::handleInput()
     if (m_GameState == state::PLAYING) // Playing
     {
 
-        if (m_Player.handleInput(this)) //C heck for input from player
+        if (m_Player.handleInput(this)) //Check for input from player
         {
             // Play a jump sound
+            olc::SOUND::PlaySample(sfxJump);
         }
     }
 }
