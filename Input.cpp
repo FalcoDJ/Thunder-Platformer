@@ -37,7 +37,6 @@ void Thunder::handleInput()
         if (m_Player.handleInput(this)) //Check for input from player
         {
             // Play a jump sound
-            olc::SOUND::PlaySample(sfxJump);
         }
     }
 }

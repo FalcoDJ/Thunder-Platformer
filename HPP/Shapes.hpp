@@ -59,10 +59,10 @@ void Rect<num>::resolveCollision(Rect &Targ)
     num Aw = (size.x + Targ.size.x) * 0.5;
     num Ah = (size.y + Targ.size.y) * 0.5;
 
-    num overlap_x = Aw - abs(Hd);
-    num overlap_y = Ah - abs(Vd);
+    num overlap_x = Hd * Hd - Aw;
+    num overlap_y = Vd * Vd - Ah;
 
-    if (overlap_x < overlap_y)
+    if (overlap_x > overlap_y)
     {
         //If collision happens on X axis
         vel.x = Targ.vel.x;
@@ -102,13 +102,13 @@ bool Rect<num>::detectCollision(Rect &Targ, float ElapsedTime)
 template <class num>
 bool Rect<num>::detectCollisionX(Rect &Targ, float ElapsedTime)
 {
-    return (pos.x < Targ.right() && Targ.pos.x < right());
+    return (this->pos.x < Targ.right() && Targ.pos.x < this->right());
 }
 
 template <class num>
 bool Rect<num>::detectCollisionY(Rect &Targ, float ElapsedTime)
 {
-    return (pos.y < Targ.bottom() && Targ.pos.y < bottom());
+    return (this->pos.y < Targ.bottom() && Targ.pos.y < this->bottom());
 }
 
 template <typename num>
