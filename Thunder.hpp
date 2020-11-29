@@ -4,10 +4,11 @@
 //Include game engine heade file
 #include "HPP/olcPixelGameEngine.h"
 
-//Include game engine sound ext.
-#include "HPP/olcPGEX_Sound.h"
+//Audio header file(s)
+
 
 //Include my header files
+#include "HPP/Math.hpp"
 #include "HPP/Shapes.hpp"
 #include "HPP/Collision.hpp"
 #include "Player.hpp"
@@ -18,7 +19,7 @@ enum class state {PLAYING, PAUSED, GAMEOVER, NEXTLEVEL};
 class Thunder : public olc::PixelGameEngine
 {
 public:
-    VectorI m_ScreenSize = {320,180};
+    VectorI m_ScreenSize = {384,216};
 
 	Thunder()
 	{
@@ -51,7 +52,10 @@ private: // other stuff
     state m_GameState;
 
     olc::Decal* m_Background = nullptr;
+    VectorF m_GameOverSize = {64,48};
+
     olc::Decal* m_PausedIMG = nullptr;
+    VectorF m_PausedSize = {64,32};
 
     olc::Decal* m_LevelDecal = nullptr;
 
@@ -67,9 +71,12 @@ private: // other stuff
     VectorI m_StartingPoint;
     RectF m_GoalPosition;
 
-    RectF m_Camera = RectF({0,0},{320,180});
+    RectF m_Camera = RectF({0,0},m_ScreenSize);
+
+    Clock m_ShakeTimer;
     int m_MAX_ShakeMag = 6;
     bool m_ScreenShake;
+    void ShakeScreen() { m_ShakeTimer.Restart(); m_ScreenShake = true; }
 
     void NewBG(std::string _path2S = "assets/GameOver.png");
     Tile** LevelManager(int _Level = 0, int _World = 0);
@@ -78,12 +85,13 @@ private: // other stuff
 public:
 	bool OnUserCreate() override
 	{
+        //
         //Initialize sound/audio
-        olc::SOUND::InitialiseAudio(44100, 1, 8, 512);
+        //
 
-        sfxJump = olc::SOUND::LoadAudioSample("assets/gen_SFX/Jump.wav");
-		sfxHurt = olc::SOUND::LoadAudioSample("assets/gen_SFX/Hurt.wav");
-		sfxPickup_Coin = olc::SOUND::LoadAudioSample("assets/gen_SFX/Pickup_Coin.wav");
+        //
+        //Initialize other stuff
+        //
 
         m_LayerUI = CreateLayer();
         EnableLayer(m_LayerUI, true);
@@ -184,8 +192,6 @@ public:
 
     bool OnUserDestroy() override
     {
-        olc::SOUND::DestroyAudio();
-
         for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
         delete[] m_TileMap;

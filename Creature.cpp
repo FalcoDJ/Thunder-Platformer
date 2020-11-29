@@ -48,6 +48,8 @@ void Creature::update(float ElapsedTime)
         
     }
 
+    pos.x += vel.x * ElapsedTime;
+
     //Y axis
     
     if (m_JumpTimer.GetElapsedTime() > 0.036f)//Gravity
@@ -68,8 +70,9 @@ void Creature::update(float ElapsedTime)
     }
 
     //Apply velocities to position
-    pos += vel * ElapsedTime;
+    pos.y += vel.y * ElapsedTime;
 
+    //Handle States
     if (m_State != state::DEFAULT)
     {
         if (m_State == state::INVINSIBLE)
@@ -139,8 +142,8 @@ void Creature::resolveCollision(Rect &Targ)
     float Aw = (size.x + Targ.size.x) / 2;
     float Ah = (size.y + Targ.size.y) / 2;
 
-    float overlap_x = Hd * Hd - Aw;
-    float overlap_y = Vd * Vd - Ah;
+    float overlap_x = Hd * Hd - Aw * Aw;
+    float overlap_y = Vd * Vd - Ah * Ah;
 
     if (overlap_x > overlap_y)
     {

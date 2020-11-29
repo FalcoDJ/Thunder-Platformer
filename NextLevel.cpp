@@ -17,6 +17,9 @@ void Thunder::NextLevel(state _Gst)
     // ! Spawn Player(s) !
     m_Player.spawn(m_StartingPoint);
 
+    //Put Camera into position (prevents gameover on new level)
+    m_Camera.center(m_StartingPoint);
+
     StartedNewLevel = false;
 
     m_GameState = _Gst;    

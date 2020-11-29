@@ -28,7 +28,7 @@ void Thunder::draw()
 
         SetDrawTarget(m_LayerBG);
         Clear(olc::BLACK);
-        DrawDecal({128, 66}, m_Background);
+        DrawDecal({(m_ScreenSize.x - m_GameOverSize.x)/2, (m_ScreenSize.y - m_GameOverSize.y)/2}, m_Background);
     }
     else
     {
@@ -72,18 +72,18 @@ void Thunder::draw()
                 Clear(olc::BLACK);
             }
             
-            FillRect({124, 54}, {72, 48}, olc::BLACK);
-            DrawDecal({128, 58}, m_PausedIMG);
+            FillRect({(m_ScreenSize.x - m_PausedSize.x)/2 - 4, (m_ScreenSize.y - m_PausedSize.y)/2 - 4}, {72, 48}, olc::BLACK);
+            DrawDecal({(m_ScreenSize.x - m_PausedSize.x)/2, (m_ScreenSize.y - m_PausedSize.y)/2}, m_PausedIMG);
             //Health Bar
-            FillRect({128,94}, {(m_Player.getLives()/5)*64, 4}, olc::GREEN);
-            FillRect({(m_Player.getLives()/5)*64 + 128,94}, {64 - (m_Player.getLives()/5)*64,4}, olc::RED);
+            FillRect({m_ScreenSize.x/2 - 32, m_ScreenSize.y/2 + 20}, {(m_Player.getLives()/5)*64, 4}, olc::GREEN);
+            FillRect({(m_Player.getLives()/5)*64 + m_ScreenSize.x/2 - 32,m_ScreenSize.y/2 + 20}, {64 - (m_Player.getLives()/5)*64,4}, olc::RED);
         }
         else
         {   
             //Health Bar
-            FillRect({8,8}, {(m_Player.getLives()/5)*64, 4}, olc::GREEN);
-            FillRect({(m_Player.getLives()/5)*64 + 8,8}, {64 - (m_Player.getLives()/5)*64,4}, olc::RED);
-            DrawRect({7,7}, {64,4}, olc::BLACK);
+            FillRect({8,8}, {(m_Player.getLives()/5)*80, 8}, olc::GREEN);
+            FillRect({(m_Player.getLives()/5)*80 + 8,8}, {80 - (m_Player.getLives()/5)*80,8}, olc::RED);
+            DrawRect({7,7}, {80,8}, olc::BLACK);
         }
     }
 }
