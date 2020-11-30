@@ -41,6 +41,9 @@ void Thunder::update()
                 else if (m_TileMap[y][x].getType() == TileTypes::COIN)
                 {
                     m_TileMap[y][x].setTileType('*');
+                    
+                    //Play a sound for coins
+                    olc::SOUND::PlaySample(sCoin);
                 }
                 
                 if (m_TileMap[y][x].getType() == TileTypes::LAVA)
@@ -55,6 +58,9 @@ void Thunder::update()
                             m_GameState = state::GAMEOVER;
                         }
                         m_Player.vel.y = -900;
+                        
+                        //Play a hurt sound
+                        olc::SOUND::PlaySample(sHurt);
                     }
                 }
                 if (m_TileMap[y][x].getType() == TileTypes::SPIKE)

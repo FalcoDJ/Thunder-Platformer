@@ -37,6 +37,25 @@ void Thunder::handleInput()
         if (m_Player.handleInput(this)) //Check for input from player
         {
             // Play a jump sound
+            olc::SOUND::PlaySample(sJump);
         }
     }
+
+    if (m_GameState == state::PAUSED)
+    {
+        float fCurVol = fVolume;
+        if (GetKey(olc::Key::UP).bPressed)
+        {
+            fVolume += 0.2f;
+        }
+        if (GetKey(olc::Key::DOWN).bPressed)
+        {
+            fVolume -= 0.2f;
+        }
+
+        if (fVolume != fCurVol)
+        std::cout << "\n New Volume is " << fVolume;
+    }
 }
+
+float Thunder::fVolume = 1.0f;

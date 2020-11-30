@@ -5,7 +5,7 @@
 #include "HPP/olcPixelGameEngine.h"
 
 //Audio header file(s)
-
+#include "HPP/olcPGEX_Sound.h"
 
 //Include my header files
 #include "HPP/Math.hpp"
@@ -41,9 +41,20 @@ private: //Layer Stuff
     bool StartedNewLevel;
 
 private: //Sound stuff
-    int sfxJump;
-    int sfxHurt;
-    int sfxPickup_Coin;
+    static float fVolume;
+
+    int sJump;
+    int sHurt;
+    int sCoin;
+
+	static float AdjustVolume(int nChannel, float fGlobalTime, float fSample)
+	{
+		// Fundamentally just control volume
+		float fOutput = fSample * fVolume;
+        
+		return fOutput;
+	}
+    
 
 private: // other stuff
 
@@ -88,6 +99,12 @@ public:
         //
         //Initialize sound/audio
         //
+        olc::SOUND::InitialiseAudio();
+        olc::SOUND::SetUserFilterFunction(AdjustVolume);
+
+        sJump = olc::SOUND::LoadAudioSample("assets/gen_SFX/Jump.wav");
+        sHurt = olc::SOUND::LoadAudioSample("assets/gen_SFX/Hurt.wav");
+        sCoin = olc::SOUND::LoadAudioSample("assets/gen_SFX/Pickup_Coin.wav");
 
         //
         //Initialize other stuff
@@ -192,6 +209,8 @@ public:
 
     bool OnUserDestroy() override
     {
+        olc::SOUND::DestroyAudio();
+
         for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
         delete[] m_TileMap;

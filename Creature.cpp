@@ -52,7 +52,7 @@ void Creature::update(float ElapsedTime)
 
     //Y axis
     
-    if (m_JumpTimer.GetElapsedTime() > 0.036f)//Gravity
+    if (m_JumpTimer.GetElapsedTime() > 0.036f && !m_OnGround)//Gravity
     {
         vel.y += m_Acceleration.y;
     }
