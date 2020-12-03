@@ -1,4 +1,11 @@
 #define OLC_PGE_APPLICATION
+#define OLC_PGEX_SOUND
+
+#ifdef __linux__
+#undef USE_ALSA
+#define USE_OPENAL
+#endif
+
 #include "Thunder.hpp"
 
 int main()

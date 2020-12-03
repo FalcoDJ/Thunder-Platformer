@@ -41,6 +41,9 @@ void Thunder::update()
                 else if (m_TileMap[y][x].getType() == TileTypes::COIN)
                 {
                     m_TileMap[y][x].setTileType('*');
+                    
+                    //Play a sound for coins
+                    olc::SOUND::PlaySample(sCoin);
                 }
                 
                 if (m_TileMap[y][x].getType() == TileTypes::LAVA)
@@ -55,6 +58,9 @@ void Thunder::update()
                             m_GameState = state::GAMEOVER;
                         }
                         m_Player.vel.y = -900;
+                        
+                        //Play a hurt sound
+                        olc::SOUND::PlaySample(sHurt);
                     }
                 }
                 if (m_TileMap[y][x].getType() == TileTypes::SPIKE)
@@ -76,8 +82,8 @@ void Thunder::update()
 
         //Camera follows player
 
-        m_Camera.pos.x = Math::lerp(m_Camera.center().x, m_Player.center().x, 0.2f) - m_Camera.size.x/2;
-        m_Camera.pos.y = Math::lerp(m_Camera.center().y, m_Player.center().y, 0.2f) - m_Camera.size.y/2;
+        m_Camera.pos.x = Math::lerp(m_Camera.center().x, m_Player.center().x, 0.17f) - m_Camera.size.x/2;
+        m_Camera.pos.y = Math::lerp(m_Camera.center().y, m_Player.center().y, 0.17f) - m_Camera.size.y/2;
         
         //Camera Cant Go Past screen edges
         
@@ -103,13 +109,13 @@ void Thunder::update()
         {
             if ((rand() % 1) > .5)
             {
-                m_Camera.pos.x = Math::lerp(m_Camera.center().x + rand() % m_MAX_ShakeMag, m_Player.center().x, 0.09f) - m_Camera.size.x/2;
-                m_Camera.pos.y = Math::lerp(m_Camera.center().y - rand() % m_MAX_ShakeMag, m_Player.center().y, 0.09f) - m_Camera.size.y/2;
+                m_Camera.pos.x = Math::lerp(m_Camera.center().x + rand() % m_MAX_ShakeMag, m_Player.center().x, 0.003f) - m_Camera.size.x/2;
+                m_Camera.pos.y = Math::lerp(m_Camera.center().y - rand() % m_MAX_ShakeMag, m_Player.center().y, 0.003f) - m_Camera.size.y/2;
             }
             else
             {
-                m_Camera.pos.x = Math::lerp(m_Camera.center().x - rand() % m_MAX_ShakeMag, m_Player.center().x, 0.09f) - m_Camera.size.x/2;
-                m_Camera.pos.y = Math::lerp(m_Camera.center().y + rand() % m_MAX_ShakeMag, m_Player.center().y, 0.09f) - m_Camera.size.y/2;
+                m_Camera.pos.x = Math::lerp(m_Camera.center().x - rand() % m_MAX_ShakeMag, m_Player.center().x, 0.003f) - m_Camera.size.x/2;
+                m_Camera.pos.y = Math::lerp(m_Camera.center().y + rand() % m_MAX_ShakeMag, m_Player.center().y, 0.003f) - m_Camera.size.y/2;
             }
             if (m_ShakeTimer.GetElapsedTime() > 0.032)
             {

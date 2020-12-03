@@ -10,7 +10,7 @@ CC = g++
 COMPILER_FLAGS = -g -w
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
+LINKER_FLAGS = -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 -lopenal
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = Thunder
