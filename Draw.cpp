@@ -51,7 +51,7 @@ void Thunder::draw()
         for (int x = 0; x < m_LevelSize.x; x++)
         {
             if (detectCollision(m_Camera, m_TileMap[y][x]))
-            if (m_TileMap[y][x].getType() != TileTypes::AIR && m_TileMap[y][x].getType() != TileTypes::GOAL)
+            if (m_TileMap[y][x].getType() != TileTypes::AIR)
             m_TileMap[y][x].drawSelf(this, m_Camera.pos);
         }
 

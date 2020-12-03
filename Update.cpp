@@ -84,9 +84,8 @@ void Thunder::update()
 
         m_Camera.pos.x = Math::lerp(m_Camera.center().x, m_Player.center().x, 0.17f) - m_Camera.size.x/2;
         m_Camera.pos.y = Math::lerp(m_Camera.center().y, m_Player.center().y, 0.17f) - m_Camera.size.y/2;
-        
+
         //Camera Cant Go Past screen edges
-        
         // X
         if (m_Camera.pos.x < 0)
         {
@@ -96,34 +95,30 @@ void Thunder::update()
         {
             m_Camera.pos.x = m_LevelSize.x * 16 - m_Camera.size.x;
         }
-
         // Y 
         if (m_Camera.bottom() > m_LevelSize.y * 16)
         {
             m_Camera.pos.y = m_LevelSize.y * 16 - m_Camera.size.y;
         }
 
-        //Screen Shake
-
+        //Camera Can Shake
         if (m_ScreenShake)
         {
             if ((rand() % 1) > .5)
             {
-                m_Camera.pos.x = Math::lerp(m_Camera.center().x + rand() % m_MAX_ShakeMag, m_Player.center().x, 0.003f) - m_Camera.size.x/2;
-                m_Camera.pos.y = Math::lerp(m_Camera.center().y - rand() % m_MAX_ShakeMag, m_Player.center().y, 0.003f) - m_Camera.size.y/2;
+                m_Camera.pos.x -= rand() % m_MAX_ShakeMag;
+                m_Camera.pos.y += rand() % m_MAX_ShakeMag;
             }
             else
             {
-                m_Camera.pos.x = Math::lerp(m_Camera.center().x - rand() % m_MAX_ShakeMag, m_Player.center().x, 0.003f) - m_Camera.size.x/2;
-                m_Camera.pos.y = Math::lerp(m_Camera.center().y + rand() % m_MAX_ShakeMag, m_Player.center().y, 0.003f) - m_Camera.size.y/2;
+                m_Camera.pos.x += rand() % m_MAX_ShakeMag;
+                m_Camera.pos.y -= rand() % m_MAX_ShakeMag;
             }
             if (m_ShakeTimer.GetElapsedTime() > 0.032)
             {
                 m_ScreenShake = false;
             }
         }
-
-        // ! Put camera boundaries here !
 
         //If player goes outside of camera end him! [ Game Over :( ]
         if (!m_Player.detectCollision(m_Camera, GetElapsedTime()))

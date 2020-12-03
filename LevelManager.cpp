@@ -271,6 +271,25 @@ Tile** Thunder::LevelManager(int _Level, int _World)
 					}
 				}
 
+				if (type == '#')
+				{
+					if (typeOfTile[y][x - 1] == '#'
+					&&  typeOfTile[y][x + 1] == '#')
+					{
+						tileFrame = 27;
+					}
+					else if (typeOfTile[y][x - 1] == '#'
+						 &&  typeOfTile[y][x + 1] != '#')
+					{
+						tileFrame = 28;
+					}
+					else if (typeOfTile[y][x - 1] != '#'
+						 &&  typeOfTile[y][x + 1] == '#')
+					{
+						tileFrame = 26;
+					}
+				}
+
 				_LevelArray[y][x].setTileType(type, tileFrame);
 			}
 			
