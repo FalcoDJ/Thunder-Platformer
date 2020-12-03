@@ -52,21 +52,35 @@ void Creature::update(float ElapsedTime)
 
     //Y axis
     
-    if (m_JumpTimer.GetElapsedTime() > 0.036f && !m_OnGround)//Gravity
+    if (m_OnGround)
+    {
+        m_IsFalling = false;
+    }
+
+    if (m_IsFalling && !m_OnGround)//Gravity
     {
         vel.y += m_Acceleration.y;
     }
 
-    if (m_Acceleration.y > m_MAX_Acceleration.y)
+    if (m_Acceleration.y > m_MAX_Acceleration.y) //Maximum Gravity
     {
         m_Acceleration.y = m_MAX_Acceleration.y;
     }
-    if (m_IsJumping) //Jump
+
+    if (m_JustJumped)
     {
         m_JumpTimer.Restart();
+    }
+    if (m_IsJumping) //Jump
+    {
         vel.y = -m_JumpSpeed;
         m_OnGround = false;
-        m_IsJumping = true;
+        
+        if (m_JumpTimer.GetElapsedTime() > 0.036f)
+        {
+            m_IsJumping = false;
+            m_IsFalling = false;
+        }
     }
 
     //Apply velocities to position
@@ -133,6 +147,7 @@ void Creature::stopFalling(float floorY)
 void Creature::fall()
 {
     m_OnGround = false;
+    m_IsFalling = true;
 }
 
 void Creature::resolveCollision(Rect &Targ)

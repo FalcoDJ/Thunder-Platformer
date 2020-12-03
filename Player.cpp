@@ -21,7 +21,7 @@ Player::Player()
     //Define speed stuff
     m_MAX_Acceleration = {275, 150};
     m_Acceleration = {75, 62};
-    m_JumpSpeed = 600;
+    m_JumpSpeed = 750;
 }
 
 bool Player::handleInput(olc::PixelGameEngine* pge)

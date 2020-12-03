@@ -86,6 +86,7 @@ protected:
     bool m_MovingRight;
     bool m_UpPressed;
     bool m_DownPressed;
+    bool m_IsFalling;
 };
 
 #endif
