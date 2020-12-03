@@ -29,6 +29,7 @@ public:
 private:
     void handleInput();
     void update();
+    void animate();
     void draw();
 
 private: //Layer Stuff
@@ -46,6 +47,7 @@ private: //Sound stuff
     int sJump;
     int sHurt;
     int sCoin;
+    int sMusic;
 
 	static float AdjustVolume(int nChannel, float fGlobalTime, float fSample)
 	{
@@ -105,6 +107,7 @@ public:
         sJump = olc::SOUND::LoadAudioSample("assets/gen_SFX/Jump.wav");
         sHurt = olc::SOUND::LoadAudioSample("assets/gen_SFX/Hurt.wav");
         sCoin = olc::SOUND::LoadAudioSample("assets/gen_SFX/Pickup_Coin.wav");
+        sMusic = olc::SOUND::LoadAudioSample("assets/Levels/World1/Music/track01.wav");
 
         //
         //Initialize other stuff
@@ -151,58 +154,17 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-        // 0-------------------0
-        // |    Input/Sound    |
-        // 0-------------------0
-
             if (GetKey(olc::ESCAPE).bPressed) // Close window if esc is pressed
             {
                 return false;
             }
-
             handleInput();
-
-        // #####################
-
-        // 0-------------------0
-        // | Update            |
-        // 0-------------------0
-        
             update();
-
-        // #####################
-
-        // 0-------------------0
-        // | Animate           |
-        // 0-------------------0
-
-        if (m_AnimTimer.GetElapsedTime() > 0.08f)
-        {
-            if (m_GameState == state::GAMEOVER) // GameOver
+            if (m_AnimTimer.GetElapsedTime() > 0.08f)
             {
-
+                animate();
             }
-            if (m_GameState == state::PAUSED) // Paused
-            {
-
-            }
-            if (m_GameState == state::PLAYING) // Playing
-            {
-                m_AnimTimer.Restart();
-                m_Player.animate();
-            }
-            
-        }
-
-        // #####################
-
-		// 0-------------------0
-        // | Draw              |
-        // 0-------------------0
-        
             draw();
-
-        // #####################
 			
 		return true;
 	}

@@ -2,6 +2,8 @@
 
 void Thunder::NextLevel(state _Gst)
 {
+    olc::SOUND::StopAll();
+
     for (int y = 0; y < m_LevelSize.y; y++)
         delete[] m_TileMap[y];
     delete[] m_TileMap;
@@ -23,4 +25,6 @@ void Thunder::NextLevel(state _Gst)
     StartedNewLevel = false;
 
     m_GameState = _Gst;    
+
+    olc::SOUND::PlaySample(sMusic, true);
 }
